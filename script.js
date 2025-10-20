@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // GANTI DENGAN ENDPOINT API INTERNAL ANDA
-    const API_SUBMIT_ENDPOINT = '/api/submit'; // <-- Target ke Vercel Function Anda
+    const API_SUBMIT_ENDPOINT = '/api/submit'; 
     
     // DOM Elements
     const introPage = document.getElementById('intro-page');
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showQuestion(totalQuestions + 1);
         const thankYouCard = document.querySelector('.thank-you-card');
         if (thankYouCard) {
-            // Animasi agar pesan sukses terlihat bagus (perlu CSS tambahan jika ingin lebih dari fadeIn)
+            // Animasi agar pesan sukses terlihat bagus (lebih profesional dari alert)
             thankYouCard.style.opacity = 0;
             thankYouCard.style.transform = 'translateY(20px)';
             setTimeout(() => {
@@ -161,13 +161,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function displayError(message) {
         console.error('Submission Error Displayed:', message);
-        // Menggunakan alert bawaan, tapi dengan pesan yang lebih profesional
-        alert(`Gagal Mengirim Data. Mohon Maaf. \n\nDetail: ${message}. \n\nPastikan koneksi internet dan konfigurasi server Anda sudah benar.`);
+        
+        // **PERBAIKAN UX:** MENGHILANGKAN ALERT BAWAAN JELEK
+        // Kita gunakan console.error dan ubah tombol submit menjadi merah
+        
+        const submitButton = document.querySelector('.submit-button');
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Gagal (Coba Lagi) →';
+            submitButton.style.backgroundColor = 'red';
+        }
+        
+        // Tampilkan pesan error di konsol untuk debugging
+        console.log(`[USER MESSAGE] Gagal Mengirim Data. Detail: ${message}`);
     }
 
 
     // =======================================================
-    // 4. FUNGSI SUBMIT DATA KE API INTERNAL
+    // 4. FUNGSI SUBMIT DATA KE API INTERNAL (PERBAIKAN FINAL ERROR)
     // =======================================================
     function submitSurvey() {
         
@@ -177,7 +188,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const submitButton = document.querySelector('.submit-button');
         submitButton.disabled = true;
         submitButton.textContent = 'Mengirim...';
-
+        submitButton.style.backgroundColor = ''; // Reset warna tombol
+        
         fetch(API_SUBMIT_ENDPOINT, {
             method: 'POST',
             headers: {
@@ -186,26 +198,32 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(answers),
         })
         .then(async response => { 
-            if (!response.ok) {
-                // KASUS 1: API GAGAL (Status 4xx/5xx)
+            let data = {};
+            
+            // Coba baca body sebagai JSON (untuk respons sukses atau error terstruktur)
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
                 try {
-                    // Coba baca JSON jika API memberikan error JSON
-                    const errorJson = await response.json();
-                    throw new Error(errorJson.error || `Server error: Status ${response.status}`);
+                    data = await response.json();
                 } catch (e) {
-                    // KASUS 2: GAGAL TOTAL / NON-JSON RESPONS (Ini menangani error "Unexpected token 'A'")
-                    const errorText = await response.text(); 
-                    console.error('Non-JSON Error Response:', errorText); 
-                    // Kita asumsikan ini adalah error server fatal dari Vercel
-                    throw new Error(`Koneksi Gagal. Status: ${response.status}. Cek log Vercel!`);
+                    // Jika gagal baca JSON (mis. respons error Vercel default HTML)
+                    // Baca sebagai teks untuk debugging
+                    const errorText = await response.text();
+                    throw new Error(`Non-JSON/Server Error. Status: ${response.status}. Pesan: ${errorText.substring(0, 50)}...`);
                 }
+            } else {
+                 // Jika tidak ada JSON (respons Vercel default HTML)
+                const errorText = await response.text();
+                throw new Error(`Server Error. Status: ${response.status}. Pesan: ${errorText.substring(0, 50)}...`);
             }
-            return response.json(); // Lanjutkan jika respons OK
-        })
-        .then(data => {
+            
+            // Cek status OK dan data.success
+            if (!response.ok) {
+                 throw new Error(data.error || `Pengiriman gagal. Status: ${response.status}`);
+            }
+
             if (data.success) { 
                 console.log('Submission Berhasil:', data);
-                // Panggil fungsi custom untuk tampilan sukses
                 showSuccessPage(); 
             } else {
                  throw new Error(data.message || 'API merespon tidak sukses.');
@@ -213,10 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch((error) => {
             console.error('Submission Error Catch:', error);
-            // Panggil fungsi custom untuk tampilan error
             displayError(error.message); 
-            submitButton.disabled = false;
-            submitButton.textContent = 'Selesai & Kirim →';
         });
     }
 
