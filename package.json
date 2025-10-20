@@ -1,0 +1,22 @@
+{
+  "name": "kantin-digital-survey-app",
+  "version": "1.0.0",
+  "description": "A professional survey application for Kantin Digital using Vercel and Aiven PostgreSQL.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "eslint-config-next": "latest"
+  }
+}

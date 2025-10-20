@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survei Kepuasan Pelanggan - Kantin Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="light-mode">
+    
+    <button id="mode-toggle" class="mode-toggle-button">🌙</button>
+
+    <div class="decor-ball decor-blue"></div>
+    <div class="decor-ball decor-teal"></div>
+
+    <div class="survey-container">
+        
+        <div id="intro-page" class="survey-page active">
+            <header class="intro-header">
+                <i class="fas fa-store-alt brand-icon"></i> 
+                <h1 class="logo">Kantin Digital</h1>
+            </header>
+            
+            <main class="intro-content">
+                <h2 class="intro-title">SURVEI KEPUASAN PELANGGAN</h2>
+                
+                <div class="purpose-box">
+                    <p class="purpose-text">
+                        <strong>Tujuan:</strong>
+                        <br>
+                        Formulir ini bertujuan untuk mengumpulkan umpan balik dan penilaian dari pengalaman Anda dengan layanan **Kantin Digital**. Data ini esensial untuk meningkatkan kualitas layanan dan memahami kebutuhan Anda selanjutnya.
+                    </p>
+                    
+                    <ul class="benefits-list">
+                        <li><span class="icon"><i class="fas fa-check"></i></span> Meningkatkan kualitas layanan dan produk kami.</li>
+                        <li><span class="icon"><i class="fas fa-check"></i></span> Memahami kebutuhan dan harapan pelanggan.</li>
+                        <li><span class="icon"><i class="fas fa-check"></i></span> Mengidentifikasi area perbaikan spesifik.</li>
+                    </ul>
+                </div>
+                
+                <p class="closing-statement">
+                    Silakan isi formulir ini dengan jujur dan terbuka. Kami sangat menghargai waktu dan pendapat Anda. Terima kasih atas partisipasi Anda!
+                </p>
+
+                <button id="start-survey-button" class="action-button primary-button">
+                    Mulai Survei →
+                </button>
+            </main>
+        </div>
+        
+        <div id="survey-page" class="survey-page hidden">
+            
+            <header class="survey-header">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+                <p class="progress-text" id="progress-text">0% Selesai (0 dari 5)</p>
+            </header>
+            
+            <main class="question-section">
+
+                <div class="question-card" data-question-id="1" data-type="text" style="display:none;">
+                    <p class="question-number">Langkah 1/5</p>
+                    <h2 class="question-text"><i class="fas fa-user-circle question-icon"></i> Identitas Pelanggan *</h2>
+                    
+                    <div class="input-group">
+                        <label for="input-q1-nama">Nama panggilan *</label>
+                        <input type="text" class="text-input-field" id="input-q1-nama" placeholder="Jawaban Anda" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="input-q1-instansi">Instansi *</label>
+                        <input type="text" class="text-input-field" id="input-q1-instansi" placeholder="Contoh: Sekolah / Perusahaan / Pribadi" required>
+                    </div>
+
+                    <div class="navigation-buttons">
+                        <button class="nav-button prev-button" disabled>← Sebelumnya</button>
+                        <button class="nav-button next-button" disabled>Lanjutkan →</button>
+                    </div>
+                </div>
+
+                <div class="question-card" data-question-id="2" data-type="radio" style="display:none;">
+                    <p class="question-number">Langkah 2/5</p>
+                    <h2 class="question-text"><i class="fas fa-star question-icon"></i> Bagaimana Anda menilai pengalaman Anda dengan Tim Kantin secara keseluruhan? *</h2>
+                    <div class="options-container">
+                        <label for="opt-2-5" class="option-card"><input type="radio" id="opt-2-5" name="q2" value="Sangat Baik"><span class="option-text">Sangat Baik</span></label>
+                        <label for="opt-2-4" class="option-card"><input type="radio" id="opt-2-4" name="q2" value="Baik"><span class="option-text">Baik</span></label>
+                        <label for="opt-2-3" class="option-card"><input type="radio" id="opt-2-3" name="q2" value="Cukup"><span class="option-text">Cukup</span></label>
+                        <label for="opt-2-2" class="option-card"><input type="radio" id="opt-2-2" name="q2" value="Kurang"><span class="option-text">Kurang</span></label>
+                        <label for="opt-2-1" class="option-card"><input type="radio" id="opt-2-1" name="q2" value="Sangat Kurang"><span class="option-text">Sangat Kurang</span></label>
+                    </div>
+                    <div class="navigation-buttons">
+                        <button class="nav-button prev-button">← Sebelumnya</button>
+                        <button class="nav-button next-button" disabled>Lanjutkan →</button>
+                    </div>
+                </div>
+
+                <div class="question-card" data-question-id="3" data-type="radio" style="display:none;">
+                    <p class="question-number">Langkah 3/5</p>
+                    <h2 class="question-text"><i class="fas fa-boxes question-icon"></i> Bagaimana Anda menilai kualitas Produk yang kami miliki? *</h2>
+                    <div class="options-container">
+                        <label for="opt-3-5" class="option-card"><input type="radio" id="opt-3-5" name="q3" value="Sangat Baik"><span class="option-text">Sangat Baik</span></label>
+                        <label for="opt-3-4" class="option-card"><input type="radio" id="opt-3-4" name="q3" value="Baik"><span class="option-text">Baik</span></label>
+                        <label for="opt-3-3" class="option-card"><input type="radio" id="opt-3-3" name="q3" value="Cukup"><span class="option-text">Cukup</span></label>
+                        <label for="opt-3-2" class="option-card"><input type="radio" id="opt-3-2" name="q3" value="Kurang"><span class="option-text">Kurang</span></label>
+                        <label for="opt-3-1" class="option-card"><input type="radio" id="opt-3-1" name="q3" value="Sangat Kurang"><span class="option-text">Sangat Kurang</span></label>
+                    </div>
+                    <div class="navigation-buttons">
+                        <button class="nav-button prev-button">← Sebelumnya</button>
+                        <button class="nav-button next-button" disabled>Lanjutkan →</button>
+                    </div>
+                </div>
+
+                <div class="question-card" data-question-id="4" data-type="radio" style="display:none;">
+                    <p class="question-number">Langkah 4/5</p>
+                    <h2 class="question-text"><i class="fas fa-thumbs-up question-icon"></i> Apakah Kami memenuhi harapan Anda? *</h2>
+                    <div class="options-container">
+                        <label for="opt-4-ya" class="option-card"><input type="radio" id="opt-4-ya" name="q4" value="Ya"><span class="option-text">Ya</span></label>
+                        <label for="opt-4-tidak" class="option-card"><input type="radio" id="opt-4-tidak" name="q4" value="Tidak"><span class="option-text">Tidak</span></label>
+                    </div>
+                    <div class="navigation-buttons">
+                        <button class="nav-button prev-button">← Sebelumnya</button>
+                        <button class="nav-button next-button" disabled>Lanjutkan →</button>
+                    </div>
+                </div>
+
+                <div class="question-card" data-question-id="5" data-type="textarea" style="display:none;">
+                    <p class="question-number">Langkah 5/5</p>
+                    <h2 class="question-text"><i class="fas fa-envelope question-icon"></i> Pesan dan kesan untuk Tim Kantin Digital.</h2>
+                    <div class="options-container">
+                        <textarea class="text-input-field textarea-field" id="input-q5-pesan" placeholder="Tuliskan pesan atau kesan Anda di sini..." rows="5"></textarea>
+                    </div>
+                    <div class="navigation-buttons">
+                        <button class="nav-button prev-button">← Sebelumnya</button>
+                        <button class="nav-button next-button submit-button">Selesai & Kirim →</button> 
+                    </div>
+                </div>
+                
+                <div class="question-card thank-you-card" data-question-id="6" style="display:none;">
+                    <h2 class="question-text"><i class="fas fa-heart question-icon"></i> Terima Kasih! 🎉</h2>
+                    <p class="closing-statement" style="text-align: left;">
+                        Partisipasi Anda sangat berharga bagi **Kantin Digital**. Data yang Anda berikan akan kami gunakan untuk terus meningkatkan kualitas layanan dan produk kami.
+                    </p>
+                </div>
+
+            </main>
+            
+        </div>
+        
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

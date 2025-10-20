@@ -1,0 +1,532 @@
+/* Definisi Variabel Warna untuk Dark/Light Mode */
+:root {
+    /* LIGHT MODE (Default) */
+    --primary-color: #1a4d7d; /* Navy Dark */
+    --accent-color: #009688;  /* Teal/Aksen yang Segar */
+    --background-color: #f8f9fa; /* Latar Belakang Sangat Terang */
+    --card-background: #ffffff; /* Latar Belakang Card Putih */
+    --text-color: #343a40;
+    --border-color: #dee2e6;
+    --input-background: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode {
+    /* DARK MODE */
+    --primary-color: #79a6d3; /* Biru muda untuk aksen */
+    --accent-color: #37d6c6;  /* Teal cerah */
+    --background-color: #121212; /* Background sangat gelap */
+    --card-background: #1e1e1e; /* Warna card gelap */
+    --text-color: #e0e0e0;
+    --border-color: #3a3a3a;
+    --input-background: #2c2c2c;
+    --shadow-color: rgba(255, 255, 255, 0.05);
+}
+
+/* -------------------------------------- */
+/* 1. RESET DAN GLOBAL STYLES             */
+/* -------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--background-color); 
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    transition: background-color 0.4s, color 0.4s; 
+}
+
+/* -------------------------------------- */
+/* 2. CONTAINER UTAMA & DEKORASI VISUAL   */
+/* -------------------------------------- */
+.survey-container {
+    background-color: var(--card-background);
+    max-width: 750px; 
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 15px 45px var(--shadow-color);
+    min-height: 600px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden; 
+    z-index: 1; 
+}
+
+/* Elemen Hiasan (Decoration Balls) */
+.decor-ball {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    filter: blur(100px); 
+    z-index: 0;
+    opacity: 0.6;
+    transition: background-color 0.4s;
+}
+
+.decor-blue {
+    background-color: var(--primary-color);
+    top: -50px;
+    left: -50px;
+}
+
+.decor-teal {
+    background-color: var(--accent-color);
+    bottom: -50px;
+    right: -50px;
+}
+
+/* Pengaturan Halaman Survey untuk Transisi */
+.survey-page {
+    position: absolute;
+    width: calc(100% - 80px); 
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.survey-page.active {
+    opacity: 1;
+    position: static;
+    transform: translateX(0);
+}
+
+.survey-page.hidden {
+    display: none;
+}
+
+
+/* -------------------------------------- */
+/* 3. INTRO PAGE STYLES (HEADER ENHANCEMENT) */
+/* -------------------------------------- */
+.intro-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.brand-icon {
+    font-size: 36px; 
+    color: var(--accent-color);
+    margin-bottom: 5px; 
+    display: block;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary-color);
+    letter-spacing: 1px; 
+}
+
+.intro-title {
+    font-size: 36px;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+
+.purpose-box {
+    background-color: var(--background-color);
+    border-left: 5px solid var(--accent-color);
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.purpose-text {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.benefits-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+/* PERBAIKAN KRITIS: Penataan Icon Checklist */
+.benefits-list li {
+    margin-bottom: 12px; 
+    display: flex;
+    align-items: flex-start; /* Alignment ke atas (teks pertama) */
+    line-height: 1.5; 
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.icon {
+    width: 20px; 
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    margin-right: 15px; 
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-top: 3px; /* Dorong sedikit ke bawah agar sejajar dengan huruf pertama */
+}
+
+/* Menggunakan Font Awesome checkmark */
+.benefits-list li .fas {
+    color: white;
+    font-size: 10px;
+    line-height: 1;
+}
+
+.closing-statement {
+    font-style: italic;
+    color: #6c757d;
+    margin-bottom: 40px;
+    text-align: center;
+    line-height: 1.6; 
+}
+
+/* -------------------------------------- */
+/* 4. BUTTONS DAN PROGRESS BAR            */
+/* -------------------------------------- */
+.action-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 700;
+    text-align: center;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.primary-button:hover {
+    background-color: #103c61;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .primary-button:hover {
+    background-color: #4b6d91;
+    transform: translateY(-2px);
+}
+
+.survey-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.progress-bar-container {
+    background-color: var(--border-color);
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--accent-color);
+    transition: width 0.4s ease-in-out;
+}
+
+.progress-text {
+    text-align: right;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+
+/* -------------------------------------- */
+/* 5. QUESTION CARD & INPUTS              */
+/* -------------------------------------- */
+.question-card {
+    padding: 20px 0;
+}
+
+.question-number {
+    font-size: 16px;
+    color: var(--accent-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.question-text {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    line-height: 1.4;
+    display: flex; 
+    align-items: center;
+}
+
+.question-icon {
+    color: var(--accent-color);
+    margin-right: 15px;
+    font-size: 24px;
+}
+
+.input-group {
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+.text-input-field {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: var(--input-background);
+    color: var(--text-color);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.text-input-field:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(26, 77, 125, 0.2);
+    outline: none;
+}
+
+.dark-mode .text-input-field:focus {
+    box-shadow: 0 0 0 3px rgba(121, 166, 211, 0.3);
+}
+
+.textarea-field {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* -------------------------------------- */
+/* 6. OPTIONS (UI Card)                   */
+/* -------------------------------------- */
+.options-container {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+.option-card {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    user-select: none;
+}
+
+.option-card:hover {
+    border-color: var(--primary-color);
+    background-color: #f0f4f7;
+}
+.dark-mode .option-card:hover {
+    background-color: #2a2a2a;
+}
+
+.option-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.option-card.selected {
+    border-color: var(--primary-color);
+    background-color: #f0f4f7;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+.dark-mode .option-card.selected {
+    background-color: #2a2a2a;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.option-card.selected .option-text {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.option-text {
+    font-size: 18px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Custom Radio Circle */
+.option-text::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    margin-right: 15px;
+    transition: background-color 0.2s, border-color 0.2s;
+    flex-shrink: 0; 
+}
+
+.option-card.selected .option-text::before {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--card-background) inset;
+}
+
+/* -------------------------------------- */
+/* 7. NAVIGATION BUTTONS & TOGGLE         */
+/* -------------------------------------- */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.nav-button {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    font-weight: 600;
+    flex-grow: 0;
+}
+
+.next-button, .submit-button {
+    background-color: var(--primary-color);
+    color: white;
+    margin-left: auto; 
+}
+
+.next-button:hover:not(:disabled), .submit-button:hover:not(:disabled) {
+    background-color: #103c61;
+}
+
+.dark-mode .next-button:hover:not(:disabled), .dark-mode .submit-button:hover:not(:disabled) {
+    background-color: #4b6d91;
+}
+
+.prev-button {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.prev-button:hover:not(:disabled) {
+    background-color: #c7c7c7;
+}
+
+.dark-mode .prev-button {
+    background-color: #3a3a3a;
+    color: var(--text-color);
+}
+
+.dark-mode .prev-button:hover:not(:disabled) {
+    background-color: #555555;
+}
+
+.nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.mode-toggle-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    transition: background-color 0.3s, transform 0.2s;
+    z-index: 10;
+}
+
+/* -------------------------------------- */
+/* 8. RESPONSIFITAS (Mobile First)        */
+/* -------------------------------------- */
+@media (max-width: 768px) {
+    body {
+        padding: 0; 
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+    .survey-container {
+        padding: 25px 20px;
+        border-radius: 0;
+        box-shadow: none; 
+        min-height: 100vh;
+        max-width: 100%; 
+    }
+    
+    .decor-ball {
+        display: none;
+    }
+
+    .intro-title {
+        font-size: 28px;
+    }
+    .logo {
+        font-size: 24px;
+        letter-spacing: 0.8px;
+    }
+
+    .question-text {
+        font-size: 22px;
+    }
+    .question-icon {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    .survey-page {
+        position: static;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .nav-button {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+    
+    .mode-toggle-button {
+        top: 10px;
+        right: 10px;
+    }
+}
