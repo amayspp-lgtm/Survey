@@ -1,15 +1,15 @@
 // /pages/api/submit.js atau kode handler POST di /app/api/submit/route.js
 
-// PERBAIKAN KRITIS: Import Pool tanpa kurung kurawal { }
-// Karena 'pg' mengekspor Pool sebagai default.
 import pg from 'pg'; 
-const { Pool } = pg; // Destructure Pool dari objek pg yang diimport
+const { Pool } = pg; 
 
 // Konfigurasi koneksi ke Aiven PostgreSQL Anda.
 // Kredensial diambil dari Environment Variable Vercel (DATABASE_URL).
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL, 
     ssl: {
+        // PERBAIKAN KRITIS UNTUK MENGATASI ERROR: self-signed certificate
+        // Ini memberitahu Node.js untuk tidak menolak koneksi meskipun sertifikat tidak dapat diverifikasi penuh.
         rejectUnauthorized: false, 
     },
     // Pengaturan optimal untuk lingkungan Serverless (Vercel Functions)
@@ -65,10 +65,11 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error('PostgreSQL Connection/Query Error:', error.message);
+        // Catat error ke konsol Vercel untuk debugging
+        console.error('PostgreSQL Connection/Query Error:', error.message); 
         return res.status(500).json({ 
             success: false, 
-            error: `Terjadi kesalahan server: Gagal koneksi/menyimpan data. Detail: ${error.message}` 
+            error: `Terjadi kesalahan server saat menyimpan data. Detail: ${error.message}` 
         });
     } finally {
         // 4. Pastikan Koneksi Selalu Dikembalikan
