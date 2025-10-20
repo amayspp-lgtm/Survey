@@ -142,7 +142,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // =======================================================
-    // 4. FUNGSI BARU: SUBMIT DATA KE API INTERNAL
+    // FUNGSI UNTUK MENAMPILKAN PESAN SUKSES/ERROR
+    // =======================================================
+    function showSuccessPage() {
+        showQuestion(totalQuestions + 1);
+        const thankYouCard = document.querySelector('.thank-you-card');
+        if (thankYouCard) {
+            // Animasi agar pesan sukses terlihat bagus (perlu CSS tambahan jika ingin lebih dari fadeIn)
+            thankYouCard.style.opacity = 0;
+            thankYouCard.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                thankYouCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                thankYouCard.style.opacity = 1;
+                thankYouCard.style.transform = 'translateY(0)';
+            }, 10);
+        }
+    }
+
+    function displayError(message) {
+        console.error('Submission Error Displayed:', message);
+        // Menggunakan alert bawaan, tapi dengan pesan yang lebih profesional
+        alert(`Gagal Mengirim Data. Mohon Maaf. \n\nDetail: ${message}. \n\nPastikan koneksi internet dan konfigurasi server Anda sudah benar.`);
+    }
+
+
+    // =======================================================
+    // 4. FUNGSI SUBMIT DATA KE API INTERNAL
     // =======================================================
     function submitSurvey() {
         
@@ -160,29 +185,36 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(answers),
         })
-        .then(response => {
-            // Kita cek apakah response OK, jika tidak, kita baca error dari API
+        .then(async response => { 
             if (!response.ok) {
-                 // Baca pesan error yang dikirim oleh API Anda
-                 return response.json().then(err => {
-                    throw new Error(err.error || `Pengiriman gagal. Status: ${response.status}`);
-                 });
+                // KASUS 1: API GAGAL (Status 4xx/5xx)
+                try {
+                    // Coba baca JSON jika API memberikan error JSON
+                    const errorJson = await response.json();
+                    throw new Error(errorJson.error || `Server error: Status ${response.status}`);
+                } catch (e) {
+                    // KASUS 2: GAGAL TOTAL / NON-JSON RESPONS (Ini menangani error "Unexpected token 'A'")
+                    const errorText = await response.text(); 
+                    console.error('Non-JSON Error Response:', errorText); 
+                    // Kita asumsikan ini adalah error server fatal dari Vercel
+                    throw new Error(`Koneksi Gagal. Status: ${response.status}. Cek log Vercel!`);
+                }
             }
-            return response.json();
+            return response.json(); // Lanjutkan jika respons OK
         })
         .then(data => {
             if (data.success) { 
                 console.log('Submission Berhasil:', data);
-                // Pindah ke Halaman Terima Kasih
-                showQuestion(totalQuestions + 1); 
+                // Panggil fungsi custom untuk tampilan sukses
+                showSuccessPage(); 
             } else {
-                 // API merespons 200, tapi body JSON-nya menunjukkan kegagalan
                  throw new Error(data.message || 'API merespon tidak sukses.');
             }
         })
         .catch((error) => {
-            console.error('Submission Error:', error);
-            alert(`Terjadi kesalahan saat mengirim data: ${error.message}.`);
+            console.error('Submission Error Catch:', error);
+            // Panggil fungsi custom untuk tampilan error
+            displayError(error.message); 
             submitButton.disabled = false;
             submitButton.textContent = 'Selesai & Kirim →';
         });
