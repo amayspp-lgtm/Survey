@@ -8,7 +8,7 @@ const { Pool } = pg;
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL, 
     ssl: {
-        // PERBAIKAN KRITIS UNTUK MENGATASI ERROR: self-signed certificate
+        // PERBAIKAN KRITIS UNTUK MENGATASI ERROR SSL/SERTIFIKAT (self-signed certificate)
         // Ini memberitahu Node.js untuk tidak menolak koneksi meskipun sertifikat tidak dapat diverifikasi penuh.
         rejectUnauthorized: false, 
     },
